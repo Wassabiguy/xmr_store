@@ -4,7 +4,7 @@ import { connect } from "mongoose";
 const is_paid = async (index) => {
         let result =''
 try{
-const req =await axios.post("http://127.0.0.1:18081/json_rpc",{
+const req =await axios.post(`${process.env.RPC_URL}`,{
         "jsonrpc":"2.0","id":"0",
         "method":"get_balance",
         "params":{"account_index":0,"address_indices":[index]}

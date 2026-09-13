@@ -4,9 +4,8 @@ import jwt from 'jsonwebtoken'
 import qrcode from 'qrcode'
 import fs from 'fs'
 import moment from "moment"
-import { CheckIdIfOccupied,json_reply,generate_jwt } from "./dont_waste_time.js"
+import { json_reply,generate_jwt } from "./dont_waste_time.js"
 import { user_cart,order,trasaction,cart_items} from "../model/db.js"
-import { dateTime } from "gramio"
 const CheckOut = async (res,data) => {
 const get_cart = await user_cart.findOne({'id':Number(data.id),'IsLocked':false})
 console.log(get_cart)
@@ -18,9 +17,9 @@ const get_cart_items = await cart_items.find({'cart_id':get_cart.cart_id})
 get_cart_items.forEach((r)=>{
   total_value += r.quantity * r.price
 })
-await axios.post("http://127.0.0.1:18081/json_rpc",{"jsonrpc":"2.0","id":"0","method":"create_address","params":{"account_index":0,"label":"new-subs","count":1}})
+await axios.post(`${process.env.RPC_URL}`,{"jsonrpc":"2.0","id":"0","method":"create_address","params":{"account_index":0,"label":"new-subs","count":1}})
 .then(async(r)=>{ 
-await axios.post('http://127.0.0.1:18081/json_rpc',{"jsonrpc":"2.0","id":"0","method":"store"}).then(async()=>{
+await axios.post(`${process.env.RPC_URL}`,{"jsonrpc":"2.0","id":"0","method":"store"}).then(async()=>{
 
 let to =await generate_jwt('3h')
 let create_tx = await trasaction.insertOne({'status':"waitingforpayment",'cart_id':get_cart.cart_id.toString(),"amount":total_value.toFixed(5),"expiration_token":to,"index":r.data.result.address_index,'address':r.data.result.address})
