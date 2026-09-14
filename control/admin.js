@@ -13,6 +13,11 @@ const mark_to_be_sent = async (req,res) => {
 }
 
 const Ban_user = async (req,res) => {
-const get_user =  await ban.findOne({})
+    try{
+await ban.insertOne({'user_name':req.user_name,'reason':req.reason})
+json_reply(res,`User ${req.user_name} been banned!`)   
+}catch(err){
+        console.log(err)
+    }
 }
 export{mark_to_be_sent,Ban_user}
