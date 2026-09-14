@@ -8,7 +8,7 @@ import { AddItemToCart,decrease_amount,get_cart_items } from './cart.js'
 import { OutOfStock,ReStocking } from './stocking.js'
 import { fetch_categories,fetch_items_by_category,fetch_item } from './get_item.js'
 import process from 'node:process'
-const app = express()
+const app = express() 
 app.use(express.urlencoded())
 app.use(express.json())
 app.get("/get_items/:category",async(req,res)=>{
