@@ -77,7 +77,6 @@ await get_specific_tx(req,res)
 })
 app.post("/mark_sent",async (req,res) => {
     let data = req.body
-    let {order_id} =data
 await mark_to_be_sent(req,res)   
 })
 ConnectToDB().then(()=>{
