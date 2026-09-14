@@ -1,4 +1,5 @@
 import express from 'express'
+import { Ban_user } from './admin.js'
 import { ConnectToDB } from '../model/db.js'
 import { add_item } from './add_item.js'
 import { mark_to_be_sent } from './admin.js'
@@ -75,6 +76,11 @@ await get_specific_tx(req,res)
 })
 app.post("/mark_sent",async (req,res) => {
 await mark_to_be_sent(req,res)   
+})
+app.post("/ban_user",async(req,res)=>{
+    let data = req.body
+    let {user_name,reason} = data
+    await Ban_user(req,res)
 })
 ConnectToDB().then(()=>{
     try{

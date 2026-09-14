@@ -1,4 +1,4 @@
-import { order } from "../model/db.js"
+import { order,ban } from "../model/db.js"
 import { json_reply } from "./dont_waste_time.js"
 const mark_to_be_sent = async (req,res) => {
     const get_order = await order.findOne({'order_id':req.body.order_id})
@@ -11,4 +11,8 @@ const mark_to_be_sent = async (req,res) => {
         json_reply(res,{'order_id':get_order.order_id,'response':`order ID: ${get_order.order_id} is marked as ( ${status} )`,'user_id':get_order.user_id,'response_cus':`Your order is out for delivery!, ID: ${get_order.order_id}`})
     }
 }
-export{mark_to_be_sent}
+
+const Ban_user = async (req,res) => {
+const get_user =  await ban.findOne({})
+}
+export{mark_to_be_sent,Ban_user}

@@ -26,7 +26,7 @@ IsLocked:{type:Boolean,default:false}
 const Ban_list = new Schema({
     user_name:String,
     reason:String,
-    ban_date: Date
+    ban_date: {type:Date,default:Date.now()}
 })
 
 const cart_item = new Schema({
@@ -74,4 +74,4 @@ const cart_items = model("cart_items",cart_item)
 const user_cart = model("cart",cart)
 const order = model("order",orders)
 const trasaction = model("transaction",trasactions)
-export{items,ConnectToDB,user_cart,trasaction,order,tickets,cart_items,Ban_list}
+export{items,ConnectToDB,user_cart,trasaction,order,tickets,cart_items,ban}
