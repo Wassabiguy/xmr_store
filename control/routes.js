@@ -1,7 +1,6 @@
-import express, { urlencoded } from 'express'
-import { ConnectToDB,items } from '../model/db.js'
+import express from 'express'
+import { ConnectToDB } from '../model/db.js'
 import { add_item } from './add_item.js'
-import { v7 } from 'uuid'
 import { mark_to_be_sent } from './admin.js'
 import { create_ticket } from './ticket.js'
 import { CheckOut,get_left_time,get_orders,get_specific_tx } from './order.js'
@@ -45,7 +44,6 @@ product_name:data.name,
 product_price:data.price,
 quantity:1
 }
-console.log(data)
 AddItemToCart(res,data)
 })
 app.post('/delete_from_cart',async (req,res) => {
@@ -76,7 +74,6 @@ app.get("/get_tx/:id",async(req,res)=>{
 await get_specific_tx(req,res)
 })
 app.post("/mark_sent",async (req,res) => {
-    let data = req.body
 await mark_to_be_sent(req,res)   
 })
 ConnectToDB().then(()=>{
