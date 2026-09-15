@@ -1,12 +1,10 @@
-import { status } from "init";
-import { config } from "dotenv";
-import process from 'node:process'
 
 import mongoose,{Schema,model} from "mongoose";
 
 const ConnectToDB =async () => {
+    
     console.log(process.env.PORT)
-await mongoose.connect(process.env.DB_STRING)
+await mongoose.connect(`${process.env.DB_STRING}`)
 }
 const ticket = new Schema({
     ticket_id:String,
