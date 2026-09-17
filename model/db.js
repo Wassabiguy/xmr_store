@@ -22,9 +22,9 @@ IsLocked:{type:Boolean,default:false}
 })
 
 const Ban_list = new Schema({
-    user_name:String,
+    user_id:Number,
     reason:String,
-    ban_date: {type:Date,default:Date.now()}
+    ban_date: {type:Date,default:new Date()}
 })
 
 const cart_item = new Schema({
@@ -65,7 +65,7 @@ const orders = new Schema({
     status:String,
     order_date:{type:Date,default:Date.now()}
 })
-const ban = model("ban-list",Ban_list)
+const ban = model("ban_list",Ban_list)
 const tickets = model('ticket',ticket)
 const items = model("items",item)
 const cart_items = model("cart_items",cart_item)
