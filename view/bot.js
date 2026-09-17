@@ -52,9 +52,8 @@ bot.callbackQuery(refresh_regex,async (ctx) => {
 bot.callbackQuery(cart_regex_minus,async (ctx) => {
   remove_from_cart(ctx)
 })
- bot.command("start",async(ctx,next)=>{
+ bot.command("start",async(ctx)=>{
   await ctx.reply("choosee",{reply_markup:keyboard_start}) 
-  await next()
 })
 bot.callbackQuery("main_menu",async (ctx) => {
   await ctx.editMessageText("choose",{reply_markup:keyboard_start})   
