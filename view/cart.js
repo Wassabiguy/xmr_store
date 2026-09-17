@@ -1,7 +1,5 @@
 import axios from "axios"
 import { InlineKeyboard, InputFile } from "grammy"
-import { keyboard_start } from "./keyboards.js"
-import { convertStreamToBuffer } from "gramio"
 const add_to_cart = async (ctx) => {
     let item_id =ctx.callbackQuery.data.replace('➕','')
     if(ctx.chat.username == undefined){
@@ -70,16 +68,20 @@ const check_out = async (ctx) => {
 let keyboard = new InlineKeyboard()
 try{
 let data = {id:ctx.chatId}
-console.log(data)
 const r = await axios.post(`${process.env.API_url}/check_out`,data)
-console.log(r.data)
+
+
+if(r.data.message.IsBanned == true){
+await ctx.editMessageText("you are banned from using the shop!")
+return
+}
 let message = `total xmr to pay ${r.data.message.total}
 xmr address is: ${r.data.message.payment_address}
 left time for payment address is ${r.data.message.remaining_time}
 `
-await keyboard.text("refresh 🗘",`${r.data.message.cart}🗘`)
-await keyboard.copyText("📋copy payment address",r.data.message.payment_address).row()
-await keyboard.copyText("📋copy order ID",r.data.message.order_id)
+ keyboard.text("refresh 🗘",`${r.data.message.cart}🗘`)
+ keyboard.copyText("📋copy payment address",r.data.message.payment_address).row()
+ keyboard.copyText("📋copy order ID",r.data.message.order_id)
 
 await ctx.editMessageText(message,{reply_markup:keyboard})
 await ctx.replyWithPhoto(new InputFile(`../images/${r.data.message.cart}.png`))
