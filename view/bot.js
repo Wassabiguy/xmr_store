@@ -1,8 +1,9 @@
 import { Bot } from "grammy";
-import { keyboard_start} from "./keyboards.js";
+import { keyboard_start,admin_keyboard} from "./keyboards.js";
 import { fetch_categories,get_specific_items,get_the_item_itself } from "./listings.js";
 import { add_to_cart,remove_from_cart,get_cart_items,check_out,refresh_tx} from "./cart.js";
 import { get_orderss,get_specific_order,markedToDe } from "./orders.js";
+import { OutOfStock } from "./admin.js";
 const bot = new Bot(`${process.env.BOT_TOKEN}`)
 let category_regex = /🧺/
 let item_regex = /🦖/
@@ -12,6 +13,9 @@ let checkOut_regex = /💳/
 let refresh_regex = /🗘/
 let get_tx_details= /⏰/
 let sent_to_mail_regex = /🛵/
+let outof_stock_regex = /🤖/
+console.log("app is running")
+
 
 bot.callbackQuery(sent_to_mail_regex,async (ctx) => {
 const id = ctx.callbackQuery.data.replace('🛵','') 
@@ -53,11 +57,25 @@ bot.callbackQuery(cart_regex_minus,async (ctx) => {
   remove_from_cart(ctx)
 })
  bot.command("start",async(ctx)=>{
-  await ctx.reply("choosee",{reply_markup:keyboard_start}) 
+  if(ctx.chat.id == process.env.ADMIN_TELEGRAM_ID){
+  await ctx.reply("hello big G!",{reply_markup:admin_keyboard})
+}
+else{
+  await ctx.reply("choosee",{reply_markup:keyboard_start})
+} 
 })
 bot.callbackQuery("main_menu",async (ctx) => {
-  await ctx.editMessageText("choose",{reply_markup:keyboard_start})   
-  
+    if(ctx.chat.id == process.env.ADMIN_TELEGRAM_ID){
+  await ctx.editMessageText("hello big G!",{reply_markup:admin_keyboard})
+}
+else{
+  await ctx.editMessageText("choose",{reply_markup:keyboard_start})
+}   
+})
+bot.callbackQuery(outof_stock_regex,async (ctx) => {
+  let value = ctx.callbackQuery.data.replace(outof_stock_regex,"")
+  console.log(value)
+ await OutOfStock(ctx,value)
 })
  bot.callbackQuery("listing",async (ctx) => {
   await fetch_categories(ctx)
