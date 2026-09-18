@@ -30,7 +30,7 @@ app.post('/add_item',async(req,res)=>{
 })
 app.post("/stocking_out",async (req,res) => {
   let data = req.body
-  let {name,category} = data  
+  let {id} = data  
   OutOfStock(res,data)
 })
 app.post("/stocking_in",async (req,res) => {
