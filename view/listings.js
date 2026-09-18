@@ -5,8 +5,13 @@ try{
  let keyboard = new InlineKeyboard()
  let counter = 0
  let request =await axios.get(`${process.env.API_url}/get_categories`)
+ if(request.data.message.IsThereCategories ==false){
+  await ctx.editMessageText(request.data.message.message)
+  return 
+}
  request.data.message.forEach(async(element) => {
     counter++
+
 if(counter % 2 == 1){
   keyboard.text(element,`${element}🧺`)
 }else{
@@ -39,6 +44,9 @@ let counter = 0
 let arr = await axios.get(`${process.env.API_url}/get_items/${category}`)
 .then(async(er)=>{
 let item_array = er.data.message
+console.log(er.data)
+console.log("TYghjjjjjjjjjj")
+
 item_array.forEach(async(r)=>{
    counter++
 if(counter % 2 == 1){
@@ -63,15 +71,25 @@ const get_the_item_itself = async (ctx,item) => {
    item = ctx.callbackQuery.data.replace('🦖','')
 
   let req = await axios.get(`${process.env.API_url}/get_item/${item}`).then(async(r)=>{
-   
-  await keyboard.text(`add to 🛒`,`${r.data.message.id}➕`)
-  await keyboard.text(`remove from 🛒`,`${r.data.message.id}➖`).row()
-  await keyboard.text('main menu',"main_menu")
+  if(ctx.chat.id == process.env.ADMIN_TELEGRAM_ID){
+  keyboard.text("out of stock",`${r.data.message.id}🤖`)
+await ctx.editMessageText(`
+${r.data.message.name} per unit price is ${r.data.message.price} xmr
+
+${r.data.message.description}
+`,{reply_markup:keyboard})  
+}else{
+   keyboard.text(`add to 🛒`,`${r.data.message.id}➕`)
+   keyboard.text(`remove from 🛒`,`${r.data.message.id}➖`).row()
+   keyboard.text('main menu',"main_menu")
   await ctx.editMessageText(`
 ${r.data.message.name} per unit price is ${r.data.message.price} xmr
 
 ${r.data.message.description}
 `,{reply_markup:keyboard})
+}
+
+
   }).catch((err)=>{
 console.log(err)
 })
