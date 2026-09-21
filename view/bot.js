@@ -4,6 +4,8 @@ import { fetch_categories,get_specific_items,get_the_item_itself } from "./listi
 import { add_to_cart,remove_from_cart,get_cart_items,check_out,refresh_tx} from "./cart.js";
 import { get_orderss,get_specific_order,markedToDe } from "./orders.js";
 import { OutOfStock } from "./admin.js";
+import { restock_convo } from "./convos.js";
+import { conversations,createConversation } from "@grammyjs/conversations";
 const bot = new Bot(`${process.env.BOT_TOKEN}`)
 let category_regex = /🧺/
 let item_regex = /🦖/
@@ -12,18 +14,23 @@ let cart_regex_minus = /➖/
 let checkOut_regex = /💳/
 let refresh_regex = /🗘/
 let get_tx_details= /⏰/
+let in_stocking_regex = /👍/
 let sent_to_mail_regex = /🛵/
 let outof_stock_regex = /🤖/
+bot.use(conversations())
+bot.use(createConversation(restock_convo))
 console.log("app is running")
 
 
 bot.callbackQuery(sent_to_mail_regex,async (ctx) => {
-const id = ctx.callbackQuery.data.replace('🛵','') 
- 
-markedToDe(ctx,id)
+ const id = ctx.callbackQuery.data.replace('🛵','') 
+ await markedToDe(ctx,id)
 })
 
-
+bot.callbackQuery(in_stocking_regex,async (ctx) => {
+  const id = ctx.callbackQuery.data.replace('👍','')
+ await ctx.conversation.enter("restock_convo",'',{id:id})
+})
 
 bot.callbackQuery(get_tx_details,async (ctx) => {
   let ree = ctx.callbackQuery.data.replace("⏰",'')

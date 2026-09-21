@@ -13,14 +13,13 @@ import process from 'node:process'
 const app = express() 
 app.use(express.urlencoded())
 app.use(express.json())
-app.get("/get_items/:category",async(req,res)=>{
-fetch_items_by_category(res,req.params.category)
+app.get("/get_items/:category/:user_id",async(req,res)=>{
+fetch_items_by_category(res,req.params.user_id,req.params.category)
 })
-app.get("/get_categories",async(req,res)=>{
-fetch_categories(res)
+app.get("/get_categories/:user_id",async(req,res)=>{
+fetch_categories(res,req.params.user_id)
 })
 app.get("/get_item/:id",async(req,res)=>{
-   
 fetch_item(res,req.params.id)
 })
 app.post('/add_item',async(req,res)=>{
@@ -35,7 +34,7 @@ app.post("/stocking_out",async (req,res) => {
 })
 app.post("/stocking_in",async (req,res) => {
      let data = req.body
-  let {name,category,stock_amount} = data  
+  let {id,stock_amount} = data  
   ReStocking(res,data)
 })
 app.post("/add_to_cart",async (req,res) => {

@@ -15,12 +15,16 @@ const ReStocking = async (res,data) => {
     if(data.stock_amount <=0){
         json_reply(res,'must be a positive number!')
     }else{
- const find = await items.findOne({'name':data.name,'category':data.category})
+ const find = await items.findOne({'id':data.id})
 if(find == null){
     json_reply(res,'no such item in the database!')
 }else{
+    try{
     await find.updateOne({'quantity_in_stock':find.quantity_in_stock+ data.stock_amount})
-    json_reply(res,'restocked again!')
+    json_reply(res,`restocked again! item named:${find.name} category ${find.category}`)
+}catch(e){
+  json_reply(res,'enter a number not a string or a symbol !')   
+}
 }}
 }
 export{ReStocking,OutOfStock}

@@ -11,4 +11,16 @@ const req = await axios.post(`${process.env.API_url}/stocking_out`,data)
 console.log(err)
 }
 }
-export{OutOfStock}
+const re_stocking = async(ctx,value,quantity,convo)=>{
+try{
+    let data = {id:value,stock_amount:quantity}
+const req = await axios.post(`${process.env.API_url}/stocking_in`,data)
+console.log(req.data)
+await ctx.reply(req.data.message)
+
+
+}catch(err){
+console.log(err)
+}
+}
+export{OutOfStock,re_stocking}

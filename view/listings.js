@@ -4,7 +4,7 @@ const fetch_categories = async (ctx) => {
 try{
  let keyboard = new InlineKeyboard()
  let counter = 0
- let request =await axios.get(`${process.env.API_url}/get_categories`)
+ let request =await axios.get(`${process.env.API_url}/get_categories/${ctx.chatId}`)
  if(request.data.message.IsThereCategories ==false){
   await ctx.editMessageText(request.data.message.message)
   return 
@@ -22,30 +22,15 @@ if(counter % 2 == 1){
 console.log(err)
 ctx.editMessageText("error!")
 }}
-///////////////////////////
-const return_items = async () => {
-   let keyboard = new InlineKeyboard()
- let counter = 0
- let arr = []
- try{
- let request =await axios.get(`${process.env.API_url}/get_categories`)
- request.data.message.forEach(async(element) => {
-  arr.push(element)
-})  
-return arr
-}catch(err){
-console.log(err)
-}}
-//////
+
 const get_specific_items = async (ctx,category) => {
   let keyboard = new InlineKeyboard()
 let p = null
 let counter = 0
-let arr = await axios.get(`${process.env.API_url}/get_items/${category}`)
+let arr = await axios.get(`${process.env.API_url}/get_items/${category}/${ctx.chatId}`)
 .then(async(er)=>{
 let item_array = er.data.message
-console.log(er.data)
-console.log("TYghjjjjjjjjjj")
+
 
 item_array.forEach(async(r)=>{
    counter++
@@ -72,21 +57,33 @@ const get_the_item_itself = async (ctx,item) => {
 
   let req = await axios.get(`${process.env.API_url}/get_item/${item}`).then(async(r)=>{
   if(ctx.chat.id == process.env.ADMIN_TELEGRAM_ID){
-  keyboard.text("out of stock",`${r.data.message.id}🤖`)
-await ctx.editMessageText(`
-${r.data.message.name} per unit price is ${r.data.message.price} xmr
+  if(r.data.message.in_stock ==true){
+    keyboard.text("out of stock",`${r.data.message.item_info.id}🤖`).row()
+    keyboard.text("main menu",'main_menu')
+    await ctx.editMessageText(`
+${r.data.message.item_info.name} per unit price is ${r.data.message.item_info.price} xmr
 
-${r.data.message.description}
+current stock amount is: ${r.data.message.item_info.quantity_in_stock}
 `,{reply_markup:keyboard})  
+  }else{
+  keyboard.text("ReStock",`${r.data.message.item_info.id}👍`)
+await ctx.editMessageText(`
+${r.data.message.item_info.name} per unit price is ${r.data.message.item_info.price} xmr
+
+${r.data.message.item_info.description}
+`,{reply_markup:keyboard})  
+}
 }else{
-   keyboard.text(`add to 🛒`,`${r.data.message.id}➕`)
-   keyboard.text(`remove from 🛒`,`${r.data.message.id}➖`).row()
+   keyboard.text(`add to 🛒`,`${r.data.message.item_info.id}➕`)
+   keyboard.text(`remove from 🛒`,`${r.data.message.item_info.id}➖`).row()
    keyboard.text('main menu',"main_menu")
   await ctx.editMessageText(`
-${r.data.message.name} per unit price is ${r.data.message.price} xmr
+ ${r.data.message.item_info.name} per unit price is ${r.data.message.item_info.price} xmr
 
-${r.data.message.description}
+${r.data.message.item_info.description}
+
 `,{reply_markup:keyboard})
+
 }
 
 
