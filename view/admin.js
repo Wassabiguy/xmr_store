@@ -23,4 +23,16 @@ await ctx.reply(req.data.message)
 console.log(err)
 }
 }
-export{OutOfStock,re_stocking}
+
+const add_item = async(ctx,data) =>{
+    try{
+    const req = await axios.post(`${process.env.API_url}/add_item`,data)
+    await ctx.reply(req.data.message)
+}catch(err){
+    await ctx.reply(err)
+}
+}
+
+
+
+export{OutOfStock,re_stocking,add_item}

@@ -24,7 +24,7 @@ fetch_item(res,req.params.id)
 })
 app.post('/add_item',async(req,res)=>{
     const data = req.body
-    const {name,price,quantity_in_stock,category,description,username} = data
+    const {name,price,quantity_in_stock,category,description} = data
     await add_item(res,data)
 })
 app.post("/stocking_out",async (req,res) => {

@@ -7,6 +7,6 @@ const keyboard_start = new InlineKeyboard()
 
 const admin_keyboard = new InlineKeyboard()
 .text("restock or Outstock an item",'listing')
-
+.text("Add a new item",'🪖')
 
 export{keyboard_start,admin_keyboard}    
