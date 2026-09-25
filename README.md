@@ -20,5 +20,5 @@ Provided that you have your wallet file which is an output made from the officia
 `./monero-wallet-rpc --rpc-bind-port PORT --disable-rpc-login --log-level 2 --wallet-file
 PATH_TO_FILE_THAT_END_WITH_.keys --prompt-for-password
 `
-If you want to use a remote node you must add the flag  `--daemon-address node.moneroworld.com:18089`
+If you want to use a remote node you must add the flag  `--daemon-address NODE_ADDRESS`
 make sure to replace words with a fully capital letter with the needed arguments, 
