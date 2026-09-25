@@ -2,14 +2,16 @@ import axios from "axios"
 import { InlineKeyboard, InputFile } from "grammy"
 const add_to_cart = async (ctx) => {
     let item_id =ctx.callbackQuery.data.replace('➕','')
+    console.log(`item id: ${item_id}`)
     if(ctx.chat.username == undefined){
         await ctx.editMessageText('You must have a username @ !')
         return 
     }
     const get_item = await axios.get(`${process.env.API_url}/get_item/${item_id}`)
     .then(async(resp)=>{
-
-    let data = {name:resp.data.message.name,price:Number(resp.data.message.price),id:Number(ctx.chatId),user_name:ctx.chat.username}
+        console.log(resp.data)
+    let data = {name:resp.data.message.item_info.name,price:Number(resp.data.message.item_info.price),id:ctx.chatId}
+    console.log(data)
     const add_item = await axios.post(`${process.env.API_url}/add_to_cart`,data)
     .then(async(r)=>{
     await ctx.answerCallbackQuery(r.data.message)
@@ -28,7 +30,7 @@ const remove_from_cart = async (ctx) => {
     const get_item = await axios.get(`${process.env.API_url}/get_item/${item_id}`)
     .then(async(resp)=>{
 
-    let data = {name:resp.data.message.name,id:Number(ctx.chatId)}
+    let data = {name:resp.data.message.item_info.name,id:Number(ctx.chatId)}
 console.log(data)
     const add_item = await axios.post(`${process.env.API_url}/delete_from_cart`,data)
     .then(async(r)=>{
@@ -84,7 +86,7 @@ left time for payment address is ${r.data.message.remaining_time}
  keyboard.copyText("📋copy order ID",r.data.message.order_id)
 
 await ctx.editMessageText(message,{reply_markup:keyboard})
-await ctx.replyWithPhoto(new InputFile(`../images/${r.data.message.cart}.png`))
+await ctx.replyWithPhoto(new InputFile(`./images/${r.data.message.cart}.png`))
 }catch(err){
 console.log(err)
 }    

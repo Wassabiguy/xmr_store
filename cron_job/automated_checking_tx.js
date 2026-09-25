@@ -64,7 +64,6 @@ if(token_expired == true && paid == 'partially paid'||token_expired == true && p
 
 }
 })
-fs.writeFileSync('/home/u/Downloads/xmr_store/g.txt',"executed!")
 
 }
 

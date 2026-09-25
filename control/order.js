@@ -44,7 +44,7 @@ fs.access('../images',(err)=>{
 
 
 
-qrcode.toFile(`../images/${get_cart.cart_id.toString()}.png`,`monero:${r.data.result.address}?tx_amount=${total_value.toFixed(5)}`).then(async(err,r)=>{
+qrcode.toFile(`./images/${get_cart.cart_id.toString()}.png`,`monero:${r.data.result.address}?tx_amount=${total_value.toFixed(5)}`).then(async(err,r)=>{
 if(err){
       json_reply(res,'error generating the Qr code')
 }else{

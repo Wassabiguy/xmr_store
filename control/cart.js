@@ -1,8 +1,7 @@
 import { user_cart,cart_items } from "../model/db.js"
 import { generate_jwt,json_reply } from "./dont_waste_time.js"
 import { v7 } from "uuid"
-import jwt from 'jsonwebtoken'
-import { get } from "mongoose"
+
 const AddItemToCart = async (res,data) => {
     console.log(data.id)
     const get_cart = await user_cart.findOne({'id':data.id,'IsLocked':false})
