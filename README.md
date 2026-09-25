@@ -21,4 +21,12 @@ Provided that you have your wallet file which is an output made from the officia
 PATH_TO_FILE_THAT_END_WITH_.keys --prompt-for-password
 `
 If you want to use a remote node you must add the flag  `--daemon-address NODE_ADDRESS`
-make sure to replace words with a fully capital letter with the needed arguments, 
+make sure to replace words with a fully capital letter with the needed arguments, once it shows you the balance of the wallet, you can now do api calls to the wallet.
+
+# 2 - Spin the backend & the frontend on 
+
+In this projcet I made it easy to run the backend or the frontend on, you use `npm run frontend` for the frontend or `npm run backend` for the backend, the main file for the backend is control/routes.js, frontend is view/bot.js
+
+# 3 - The Cron job script
+
+In order to make it smoother for people to pay for the stuff they want to order we must have some script that it is automated to be executed every certain time which is chekc.sh file responsible for sending messages to the customers inforimg them that their payment were detected fully or partially, for me I would let it execute every minute, search on google on how to add a cron job in the background in your linux distro.
